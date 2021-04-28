@@ -27,7 +27,6 @@ enum keycodes {
     EXT_PLV,
     DYNAMIC_MACRO_RANGE,
 };	
-#include "dynamic_macro.h"
 
 #define RGBLIGHT_EFFECT_RGB_TEST
 #define RGBLIGHT_MODE_RGB_TEST
@@ -72,17 +71,3 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-	/*if(keycode==DYN_REC_START1){
-		keycode=DYN_REC_STOP;
-	}else if(keycode==DYN_REC_START2){
-		keycode=DYN_REC_STOP;
-	}*/
-	
-    if (!process_record_dynamic_macro(keycode, record)) {
-        return false;
-    }
-	
-	return true;	
-}
