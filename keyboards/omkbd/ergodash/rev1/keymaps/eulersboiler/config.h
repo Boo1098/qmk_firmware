@@ -33,7 +33,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define RGBLIGHT_DISABLE_KEYCODES
 #define RGBLIGHT_DEFAULT_HUE 255
 #define RGBLIGHT_DEFAULT_SAT 255
-#define RGBLIGHT_DEFAULT_VAL 100
+#define RGBLIGHT_DEFAULT_VAL 0
 #define RGBLIGHT_LIMIT_VAL 50
 #define RGBLIGHT_LAYERS
 

@@ -11,7 +11,8 @@ enum layer_names {
 // Layer Lighting
 // Default qwerty layer lighting
 const rgblight_segment_t PROGMEM qwerty_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0,24,  18,200,255}
+    //{0,24,  18,200,255}
+    {0,24,  18,200,0}
 );
 // raise layer lighting
 const rgblight_segment_t PROGMEM raise_layer[] = RGBLIGHT_LAYER_SEGMENTS(
@@ -48,12 +49,10 @@ void keyboard_post_init_user(void){
     rgblight_layers = rgb_layers;
 }
 
-// enum custom_keycodes {
-//   QWERTY,
-//   LOWER,
-//   RAISE,
-//   ADJUST,
-// };
+enum custom_keycodes {
+    LEDON = SAFE_RANGE,
+    LEDOFF
+};
 
 // Unicode characters setup
 // TODO: change unicode mode based on OS or add to an adjust layer
@@ -233,12 +232,31 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    */
   [_ADJUST] = LAYOUT(
     _______, _______, _______, _______, _______, _______,_______,                       _______, _______, _______, _______, _______, _______, _______,
-    _______, _______, _______, _______, QK_BOOT, RGB_HUI,_______,                       _______, RGB_SAD, UC_NEXT, RGB_VAD, RGB_VAI, _______, _______,
-    _______, _______, _______, _______, BL_UP  , BL_DOWN,_______,                       _______, _______, _______, _______, _______, _______, _______,
-    _______, _______, _______, _______, _______, _______,_______,                       _______, _______, _______, _______, _______, _______, _______,
+    _______, _______, _______, EE_CLR,  QK_BOOT, RGB_TOG,_______,                       _______, RGB_SAD, UC_NEXT, RGB_VAD, RGB_VAI, _______, _______,
+    _______, _______, _______, _______, BL_UP  , BL_DOWN,_______,                       _______, _______, _______, _______, LEDON,   _______, _______,
+    _______, _______, _______, _______, _______, _______,_______,                       _______, _______, _______, _______, LEDOFF,  _______, _______,
     _______, _______, _______, _______,          _______,_______,_______,       _______,_______, _______,          _______, _______, _______, _______
   )
 };
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch(keycode){
+        case LEDOFF:
+            if(record->event.pressed){
+                rgblight_set_layer_state(0, false);
+            }
+            return false;
+        case LEDON:
+            if(record->event.pressed){
+                rgblight_set_layer_state(0, true);
+            }
+            return false;
+        default:
+            return true;
+    }
+}
+
+
 
 #ifdef AUDIO_ENABLE
 float tone_qwerty[][2]     = SONG(QWERTY_SOUND);
@@ -256,12 +274,14 @@ void persistent_default_layer_set(uint16_t default_layer) {
 // }
 
 layer_state_t default_layer_state_set_user(layer_state_t state) {
-    rgblight_set_layer_state(0, layer_state_cmp(state, _QWERTY));
+    // all the time lighting is annoying
+    rgblight_set_layer_state(0, false); //layer_state_cmp(state, _QWERTY));
     return state;
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
     state=update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
+    rgblight_set_layer_state(0, false); //layer_state_cmp(state, _QWERTY));
     rgblight_set_layer_state(1, layer_state_cmp(state, _RAISE));
     rgblight_set_layer_state(2, layer_state_cmp(state, _LOWER));
     rgblight_set_layer_state(3, layer_state_cmp(state, _ADJUST));
@@ -269,10 +289,6 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     return state;
 }
 
-// layer_state_t layer_state_set_kb(layer_state_t state) {
-//     layer_state_set_user(state);
-//     return state;
-// }
 // Red for dynamic macro recording
 void dynamic_macro_record_start_user(int8_t direction) {
   rgblight_set_layer_state(4, true);
