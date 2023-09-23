@@ -62,3 +62,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define LEADER_PER_KEY_TIMING
 #define LEADER_NO_TIMEOUT 
 
+// Grave escape
+#undef LOCKING_SUPPORT_ENABLE
+#undef LOCKING_RESYNC_ENABLE
+#undef GRAVE_ESC_CTRL_OVERRIDE
+#undef GRAVE_ESC_ALT_OVERRIDE
+#undef GRAVE_ESC_GUI_OVERRIDE
+#undef GRAVE_ESC_SHIFT_OVERRIDE

@@ -51,7 +51,8 @@ void keyboard_post_init_user(void){
 
 enum custom_keycodes {
     LEDON = SAFE_RANGE,
-    LEDOFF
+    LEDOFF,
+    GESC
 };
 
 // Unicode characters setup
@@ -77,10 +78,10 @@ enum unicode_names {
     ETA,
     KAPPA,
     XI,
-    XIU,
     PHI,
     PHIU,
     CHI,
+    CHIU,
     PSI,
     PSIU,
     OMEGA,
@@ -110,11 +111,11 @@ const uint32_t unicode_map[] PROGMEM = {
     [EPSILON]=0x03B5,  // ε
     [ETA]   = 0x03B7,  // η
     [KAPPA] = 0x03BA,  // κ
-    [XI]    = 0x03BE,  // ξ
-    [XIU]   = 0x039E,  // Ξ
+    [XI]    = 0x03C7,  // χ
     [PHI]   = 0x03C6,  // φ
     [PHIU]  = 0x03A6,  // Φ
     [CHI]   = 0x03BE,  // ξ
+    [CHIU]  = 0x039E,  // Ξ
     [PSI]   = 0x03C8,  // ψ
     [PSIU]  = 0x03A8,  // Ψ
     [OMEGA] = 0x03C9,  // ω
@@ -139,9 +140,9 @@ const uint32_t unicode_map[] PROGMEM = {
 #define KC_EPS   UM(EPSILON)
 #define KC_ETA   UM(ETA)
 #define KC_KAPPA UM(KAPPA)
-#define KC_XI    UP(XI,XIU)
+#define KC_XI    UM(XI)
 #define KC_PHI   UP(PHI,PHIU)
-#define KC_CHI   UM(CHI)
+#define KC_CHI   UP(CHI,CHIU)
 #define KC_PSI   UP(PSI,PSIU)
 #define KC_OMEGA UP(OMEGA,OMEGAU)
 #define KC_RHO   UM(RHO)
@@ -167,7 +168,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * ,----------------------------------------------------------------------------------------------------------------------.
    */
   [_QWERTY] = LAYOUT(
-    QK_GESC, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_MINS,                        KC_EQL , KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_PSCR,
+    GESC,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_MINS,                        KC_EQL , KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_PSCR,
     KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_LBRC,                        KC_RBRC, KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSLS,
     KC_GRV,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    DM_REC1,                        DM_PLY1, KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    TG_LWR,                         TG_RSE,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_MPLY,
@@ -249,6 +250,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case LEDON:
             if(record->event.pressed){
                 rgblight_set_layer_state(0, true);
+            }
+            return false;
+        case GESC:
+            if(record->event.pressed){
+                if((get_mods() & MOD_BIT(KC_LCTL)) == MOD_BIT(KC_LCTL)){
+                        send_string_with_delay("`",255);
+                } else if((get_mods() & MOD_BIT(KC_LSFT)) == MOD_BIT(KC_LSFT)){
+                        SEND_STRING("~");
+                } else if ((get_mods() & MOD_BIT(KC_LSFT)) == MOD_BIT(KC_LSFT)){
+                        SEND_STRING("fuck");
+                } else {
+                        SEND_STRING("\e");
+                }
             }
             return false;
         default:
