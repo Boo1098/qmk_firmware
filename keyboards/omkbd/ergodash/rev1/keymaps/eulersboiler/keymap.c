@@ -5,7 +5,9 @@ enum layer_names {
     _QWERTY,
     _RAISE,
     _LOWER,
-    _ADJUST
+    _ADJUST,
+    _GAMING,
+    _BLANK
 };
 
 // Layer Lighting
@@ -237,7 +239,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, _______, _______, _______, BL_UP  , BL_DOWN,_______,                       _______, _______, _______, _______, LEDON,   _______, _______,
     _______, _______, _______, _______, _______, _______,_______,                       _______, _______, _______, _______, LEDOFF,  _______, _______,
     _______, _______, _______, _______,          _______,_______,_______,       _______,_______, _______,          _______, _______, _______, _______
+  ),
+
+  [_GAMING] = LAYOUT(
+    _______, _______, _______, _______, _______, _______, _______,                       _______, _______, _______, _______, _______, _______, _______,
+    _______, _______, _______, _______, _______, _______, _______,                       _______, _______, _______, _______, _______, _______, _______,
+    _______, _______, _______, _______, _______, _______, _______,                       _______, _______, _______, _______, _______, _______, _______,
+    _______, _______, _______, _______, _______, _______, _______,                       _______, _______, _______, _______, _______, _______, _______,
+    _______, _______, _______, _______,          _______, _______, _______,     _______, _______, _______,          _______, _______, _______, _______
+  ), 
+
+  // For reference to build new layers
+  [_BLANK] = LAYOUT(
+    _______, _______, _______, _______, _______, _______, _______,                       _______, _______, _______, _______, _______, _______, _______,
+    _______, _______, _______, _______, _______, _______, _______,                       _______, _______, _______, _______, _______, _______, _______,
+    _______, _______, _______, _______, _______, _______, _______,                       _______, _______, _______, _______, _______, _______, _______,
+    _______, _______, _______, _______, _______, _______, _______,                       _______, _______, _______, _______, _______, _______, _______,
+    _______, _______, _______, _______,          _______, _______, _______,     _______, _______, _______,          _______, _______, _______, _______
   )
+
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -254,12 +274,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
         case GESC:
             if(record->event.pressed){
+                // TODO: Doesn't work on linux for some reason
                 if((get_mods() & MOD_BIT(KC_LCTL)) == MOD_BIT(KC_LCTL)){
-                        send_string_with_delay("`",255);
+                        SEND_STRING("`");
                 } else if((get_mods() & MOD_BIT(KC_LSFT)) == MOD_BIT(KC_LSFT)){
                         SEND_STRING("~");
-                } else if ((get_mods() & MOD_BIT(KC_LSFT)) == MOD_BIT(KC_LSFT)){
-                        SEND_STRING("fuck");
                 } else {
                         SEND_STRING("\e");
                 }
@@ -354,9 +373,20 @@ void leader_end_user(void) {
     if (leader_sequence_one_key(KC_F)) {
         // Leader, f => Types the below string
         SEND_STRING("QMK is awesome.");
+    // Example of simple leader key macro
     } else if (leader_sequence_one_key(KC_P)) {
         tap_code16(KC_MPLY);
+
+    // Set rotation point in NX
+    } else if (leader_sequence_two_keys(KC_N, KC_R)) {
+        SEND_STRING(SS_LALT(SS_TAP(X_F2)));
+    
+    // Align normal to fave in NX
+    } else if (leader_sequence_two_keys(KC_N, KC_F)) {
+        tap_code16(KC_F8);
     }
+        
+
     rgblight_set_layer_state(5, false);
 }
 
