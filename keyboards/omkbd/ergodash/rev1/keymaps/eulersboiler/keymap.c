@@ -174,7 +174,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_LBRC,                        KC_RBRC, KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSLS,
     KC_GRV,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    DM_REC1,                        DM_PLY1, KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    TG_LWR,                         TG_RSE,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_MPLY,
-    KC_LCTL, KC_LALT, KC_LGUI, QK_LEAD,          KC_ENT,  KC_SPC,    KC_HOME,    KC_END,  KC_SPC , KC_BSPC,          KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
+    KC_LCTL, KC_LALT, KC_LGUI, KC_END,           KC_HOME, KC_SPC,   KC_ENT,     KC_BSPC,  KC_SPC,  QK_LEAD,          KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
   ),
 
   /* Raise
@@ -370,11 +370,8 @@ void leader_start_user(void) {
 }
 
 void leader_end_user(void) {
-    if (leader_sequence_one_key(KC_F)) {
-        // Leader, f => Types the below string
-        SEND_STRING("QMK is awesome.");
     // Example of simple leader key macro
-    } else if (leader_sequence_one_key(KC_P)) {
+    if (leader_sequence_one_key(KC_P)) {
         tap_code16(KC_MPLY);
 
     // Set rotation point in NX
@@ -384,6 +381,10 @@ void leader_end_user(void) {
     // Align normal to fave in NX
     } else if (leader_sequence_two_keys(KC_N, KC_F)) {
         tap_code16(KC_F8);
+
+    // just for fun
+    } else if (leader_sequence_one_key(KC_HOME)) {
+        tap_code16(KC_END);
     }
         
 
