@@ -56,7 +56,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #undef RGBLIGHT_MODE_TWINKLE
 
 // Later tap toggle taps
-#define TAPPING_TOGGLE 1
+#define TAPPING_TOGGLE 2
 
 // Leader Key settings
 #define LEADER_PER_KEY_TIMING
