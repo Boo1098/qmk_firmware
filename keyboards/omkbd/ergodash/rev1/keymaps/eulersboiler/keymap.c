@@ -1,5 +1,7 @@
 #include QMK_KEYBOARD_H
 
+// Vim setup
+#include "qmk-vim/src/vim.h"
 
 enum layer_names {
     _QWERTY,
@@ -261,6 +263,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    // Exit if in vim
+    if (!process_vim_mode(keycode,record)) {
+        return false;
+    }
     switch(keycode){
         case LEDOFF:
             if(record->event.pressed){
@@ -376,11 +382,15 @@ void leader_end_user(void) {
 
     // Set rotation point in NX
     } else if (leader_sequence_two_keys(KC_N, KC_R)) {
-        SEND_STRING(SS_LALT(SS_TAP(X_F2)));
+        SEND_STRING(SS_LCTL(SS_TAP(X_F2)));
     
     // Align normal to fave in NX
     } else if (leader_sequence_two_keys(KC_N, KC_F)) {
         tap_code16(KC_F8);
+
+    // Enter vim mode
+    } else if (leader_sequence_one_key(KC_V)) {
+        toggle_vim_mode();
 
     // just for fun
     } else if (leader_sequence_one_key(KC_HOME)) {

@@ -41,7 +41,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define DYNAMIC_MACRO_NO_NESTING
 
 // Unicode setup
-#define UNICODE_SELECTED_MODES UNICODE_MODE_WINCOMPOSE, UNICODE_MODE_LINUX
+#define UNICODE_SELECTED_MODES UNICODE_MODE_WINDOWS, UNICODE_MODE_WINCOMPOSE, UNICODE_MODE_LINUX
 
 // Remove animations
 #undef RGBLIGHT_MODE_BREATHING
@@ -69,3 +69,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #undef GRAVE_ESC_ALT_OVERRIDE
 #undef GRAVE_ESC_GUI_OVERRIDE
 #undef GRAVE_ESC_SHIFT_OVERRIDE
+
+// Vim config
+#define VIM_COLON_CMDS
+#define BETTER_VISUAL_MODE
+#define VIM_G_MOTIONS
+#define VIM_REPLACE
+#define VIM_NUMBERED_JUMPS
+
+// Disable locking support
+#undef LOCKING_SUPPORT_ENABLE
+#undef LOCKING_RESYNC_ENABLE
+
+// Remove debugging
+#ifndef NO_DEBUG
+#define NO_DEBUG
+#endif // !NO_DEBUG
+#if !defined(NO_PRINT) && !defined(CONSOLE_ENABLE)
+#define NO_PRINT
+#endif // !NO_PRINT
