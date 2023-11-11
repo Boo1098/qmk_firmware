@@ -7,6 +7,7 @@ UNICODEMAP_ENABLE = yes
 LEADER_ENABLE = yes
 MOUSEKEY_ENABLE = no
 CONSOLE_ENABLE = no
+TAP_DANCE_ENABLE = yes
 
 # reduce file size
 EXTRAFLAGS += -flto

@@ -61,6 +61,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // Leader Key settings
 #define LEADER_PER_KEY_TIMING
 #define LEADER_NO_TIMEOUT 
+#define LEADER_TIMEOUT 250
 
 // Grave escape
 #undef LOCKING_SUPPORT_ENABLE
@@ -76,6 +77,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define VIM_G_MOTIONS
 #define VIM_REPLACE
 #define VIM_NUMBERED_JUMPS
+
+// Tap dance config
+// TODO: find why this causes errors?
+#undef TAPPING_TERM
+#define TAPPING_TERM 250
+//#define TAPPING_TERM_PER_KEY
 
 // Disable locking support
 #undef LOCKING_SUPPORT_ENABLE
